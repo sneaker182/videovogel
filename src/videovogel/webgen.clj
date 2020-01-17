@@ -4,16 +4,44 @@
     [html-tools.server :as server]
     [hiccup.util :refer [escape-html]]))
 
-(def page-data
-  {:products [{:img "mavic-mini.jpg"
-               :title "produkt 1"
-               :text "asdfasdfasdfasd<hr>"}
-              {:title "produkt 2"}
-              {:title "vxcvy 3"}]})
+;;; inhalte
 
-(defn header []
-  [:div
-   [:h1 "abc"]])
+(def page-data
+  {:website-name "VideoVogel"
+   :hello "Willkommen"
+   :main-description (str "Suchen Sie sich was aus. "
+                          "Platzhaltertexte gibt es ja schließlich genug.")
+   :products-title "Angebot"
+   :products [{:img "landschaft.jpg"
+               :title "Perspektivwechsel"
+               :text "Erstbegutachtung von Schäden, etc."}
+              {:img "mavic-mini.jpg"
+               :title "Neuste Technik"
+               :text (str "Mit der Drohne lassen sich Fotos und Videos "
+                          "aufnehmen. Schon ab 49,- EUR / Std.")}
+              {:img "hochzeit.jpg"
+               :title "Unvergesslich"
+               :text "Halten Sie ihre schönsten Momente fest."}]
+   :imprint "Impressum: Kacper Grubalski | Dingelstedtwall 7 | 31737 Rinteln | Mail kacper@grubalski.de"})
+
+;;; navigationsleiste
+
+(defn nav-bar []
+  [:header
+   [:div.navbar.navbar-dark.bg-dark.shadow-sm
+    [:div.container.d-flex.justify-content-between
+     [:a.navbar-brand.d-flex.align-items-center
+      {:href "#"}
+      [:strong (-> page-data :website-name)]]]]])
+
+;;; website beschreibung
+
+(defn main-description []
+  [:section.jumbotron.text-center
+   [:div.container
+    [:h1 (-> page-data :hello)]
+    [:p.text-muted (-> page-data :main-description)]]])
+
 
 ;;; main-gallery
 
@@ -27,23 +55,31 @@
 
 (defn main-gallery []
   [:div
-   [:h2 "Main Gallery"]
+;;   [:h2 (-> page-data :products-title)]
    [:div
     {:style "display:grid; grid-template-columns:1fr 1fr 1fr;"}
     (doall
      (for [p (-> page-data :products)]
        (product p)))]])
 
-;;; config - in diesem block funzt die live
+
+(defn footer []
+  [:footer.text-muted
+   [:div.container
+    [:p (-> page-data :imprint)]]])
+
+
+;;; config
 
 (defn index-page []
   {:modules [:bootstrap-cdn
              :page-reload]
    :scripts ["page_reload.api.watch();"]
    :content [[:div.container
-              (header)
+              (nav-bar)
+              (main-description)
               (main-gallery)
-              "hello asdf" "asdf"]]})
+              (footer)]]})
 
 
 (defn website []
