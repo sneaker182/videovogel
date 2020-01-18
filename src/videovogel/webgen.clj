@@ -22,17 +22,39 @@
               {:img "hochzeit.jpg"
                :title "Unvergesslich"
                :text "Halten Sie ihre schönsten Momente fest."}]
-   :imprint "Impressum: Kacper Grubalski | Dingelstedtwall 7 | 31737 Rinteln | Mail kacper@grubalski.de"})
+   :imprint (str "Impressum: Kacper Grubalski | "
+                 "Dingelstedtwall 7 | "
+                 "31737 Rinteln | "
+                 "Mail kacper -ät- grubalski.de")})
 
 ;;; navigationsleiste
 
-(defn nav-bar []
+(defn header []
   [:header
+   [:div.collapse.bg-dark
+    {:id "navbarHeader"}
+    [:div.container
+     [:div.row
+      [:div.col-sm-8.col-md-7.py-4
+       [:h4.text-white "Über"]
+       [:p.text-muted "Ich bins, Kacper."]]
+      [:div.col-sm-4.offset-md-1.py-4
+       [:h4.text-white "Kontakt"]
+       [:ul.list-unstyled
+        [:li [:a.text-wihte {:href "#"} "E-Mail"]]]]]]]
    [:div.navbar.navbar-dark.bg-dark.shadow-sm
     [:div.container.d-flex.justify-content-between
      [:a.navbar-brand.d-flex.align-items-center
       {:href "#"}
-      [:strong (-> page-data :website-name)]]]]])
+      [:strong (-> page-data :website-name)]]
+     [:button.navbar-toggler.collapsed
+      {:type "button"
+       :data-toggle "collapse"
+       :data-target "#navbarHeader"
+       :aria-controls "navbarHeader"
+       :aria-expanded "false"
+       :aria-label "Auf/Zu"}
+      [:span.navbar-toggler-icon]]]]])
 
 ;;; website beschreibung
 
@@ -66,8 +88,9 @@
 (defn footer []
   [:footer.text-muted
    [:div.container
-    [:p (-> page-data :imprint)]]])
-
+    [:p (-> page-data :imprint)]]
+   [:script {:src "https://code.jquery.com/jquery-3.4.1.slim.min.js"}]
+   [:script {:src "https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"}]])
 
 ;;; config
 
@@ -75,8 +98,8 @@
   {:modules [:bootstrap-cdn
              :page-reload]
    :scripts ["page_reload.api.watch();"]
-   :content [[:div.container
-              (nav-bar)
+   :content [[:body
+              (header)
               (main-description)
               (main-gallery)
               (footer)]]})
